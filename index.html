@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#070b13">
+  <title>Neon Front: Night Run</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2307101a'/%3E%3Cpath d='M18 16h8l14 32h-9l-3-8H20l-2 8H9l9-32zm12 9-4 11h9l-5-11z' fill='%235beaff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="game" aria-label="Neon Front game canvas"></canvas>
+    <div class="scanlines" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">NF</span><span>NEON<span class="brand-light">FRONT</span><small>URBAN COMBAT RACING</small></span></div>
+      <div class="mission-tag"><i></i> OPERATION: NIGHTFALL <span> // SECTOR 09</span></div>
+      <button id="sound-btn" class="icon-btn" aria-label="Toggle sound">♫ <span>SOUND</span></button>
+    </header>
+    <section class="hud" id="hud" aria-live="polite">
+      <div class="hud-left">
+        <div class="readout"><span class="micro-label">VELOCITY</span><div><strong id="speed">000</strong><small> KM/H</small></div><div class="speed-track"><i id="speed-fill"></i></div></div>
+        <div class="readout distance-readout"><span class="micro-label">RUN DISTANCE</span><div><strong id="distance">0.0</strong><small> KM</small></div></div>
+      </div>
+      <div class="objective"><span class="objective-icon">✦</span><div><span class="micro-label">PRIMARY OBJECTIVE</span><strong>BREAK THROUGH THE CHECKPOINT</strong><small id="objective-sub">ELIMINATE HOSTILES • SURVIVE THE RUN</small></div></div>
+      <div class="hud-right">
+        <div class="weapon"><span class="micro-label">EQUIPPED // M7 PULSE</span><strong>∞ <small>ENERGY</small></strong><div class="ammo-pips"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="wave">THREAT <b id="threat">LOW</b><div class="threat-bars"><i></i><i></i><i></i><i></i></div></div>
+      </div>
+      <div class="vitals"><span class="micro-label">ARMOR</span><div class="armor-bar"><i id="armor-fill"></i></div><b id="armor-value">100</b></div>
+      <div class="nitro"><span class="micro-label">NITRO</span><div class="nitro-bar"><i id="nitro-fill"></i></div><span id="nitro-label">READY</span></div>
+      <div id="toast" class="toast"></div>
+    </section>
+    <div id="crosshair" class="crosshair"><i></i><b></b><em></em><span></span></div>
+    <div class="bottom-hint" id="bottom-hint"><span>WASD</span> DRIVE <b>•</b> <span>MOUSE</span> AIM + FIRE <b>•</b> <span>SHIFT</span> NITRO <b>•</b> <span>SPACE</span> BLAST</div>
+    <div class="mobile-controls" id="mobile-controls">
+      <div class="steer-pad"><button data-key="ArrowLeft" aria-label="Steer left">‹</button><button data-key="ArrowRight" aria-label="Steer right">›</button></div>
+      <button id="mobile-fire" class="fire-btn" aria-label="Fire">FIRE</button>
+      <button id="mobile-boost" class="boost-btn" aria-label="Boost">N₂O</button>
+    </div>
+    <section class="overlay" id="intro">
+      <div class="intro-card">
+        <div class="eyebrow"><span></span> 2552 // NEW MOMBASA AFTER DARK</div>
+        <h1>NEON<br><em>FRONT</em></h1>
+        <p class="tagline">THE CITY IS A WARZONE.<br><b>MAKE IT YOUR RACEWAY.</b></p>
+        <div class="intro-rule"></div>
+        <p class="briefing"><b>FIELD BRIEFING</b> — Covenant raiders have seized the expressway. Punch through the blockade, take out hostile skimmers, and keep your Warthog moving. The fastest route is the one you survive.</p>
+        <button id="start-btn" class="start-btn"><span>DEPLOY</span><b>↗</b></button>
+        <div class="controls-note"><span>← →</span> STEER <i>·</i> <span>CLICK</span> PULSE RIFLE <i>·</i> <span>SPACE</span> ROCKET <i>·</i> <span>SHIFT</span> NITRO</div>
+      </div>
+      <div class="side-stats"><div><b>01</b><span>SURVIVAL<br>IS OPTIONAL</span></div><div><b>02</b><span>SPEED<br>IS NOT</span></div></div>
+      <div class="version">NF // COMBAT RACING SYSTEMS <span>BUILD 09.25.52</span></div>
+    </section>
+    <section class="overlay hidden" id="end-screen">
+      <div class="end-card"><div class="eyebrow"><span></span> RUN COMPLETE</div><h2 id="end-title">RUN ENDED</h2><p id="end-copy">The blockade held. This time.</p><div class="score-grid"><div><span>DISTANCE</span><b id="final-distance">0.0 KM</b></div><div><span>HOSTILES</span><b id="final-kills">00</b></div><div><span>TOP SPEED</span><b id="final-speed">000 KM/H</b></div></div><button id="retry-btn" class="start-btn"><span>RUN IT BACK</span><b>↻</b></button></div>
+    </section>
+    <div class="damage-flash" id="damage-flash"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
