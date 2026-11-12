@@ -3,58 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#070b13">
-  <title>Neon Front: Night Run</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2307101a'/%3E%3Cpath d='M18 16h8l14 32h-9l-3-8H20l-2 8H9l9-32zm12 9-4 11h9l-5-11z' fill='%235beaff'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#071018">
+  <title>Midnight Circuit — Underground Racing</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main id="game-shell">
-    <canvas id="game" aria-label="Neon Front game canvas"></canvas>
-    <div class="scanlines" aria-hidden="true"></div>
+    <canvas id="game" aria-label="Midnight Circuit street racing game"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
     <header class="topbar">
-      <div class="brand"><span class="brand-mark">NF</span><span>NEON<span class="brand-light">FRONT</span><small>URBAN COMBAT RACING</small></span></div>
-      <div class="mission-tag"><i></i> OPERATION: NIGHTFALL <span> // SECTOR 09</span></div>
-      <button id="sound-btn" class="icon-btn" aria-label="Toggle sound">♫ <span>SOUND</span></button>
+      <a class="brand" href="#" aria-label="Midnight Circuit home"><span class="brand-mark">MC</span><span>MIDNIGHT<span class="brand-light"> CIRCUIT</span><small>URBAN STREET RACING</small></span></a>
+      <div class="race-status"><i></i><span id="status-text">GARAGE // BAY 04</span></div>
+      <button id="audio-btn" class="audio-btn" aria-label="Toggle sound">♪ <span>SOUND OFF</span></button>
     </header>
-    <section class="hud" id="hud" aria-live="polite">
-      <div class="hud-left">
-        <div class="readout"><span class="micro-label">VELOCITY</span><div><strong id="speed">000</strong><small> KM/H</small></div><div class="speed-track"><i id="speed-fill"></i></div></div>
-        <div class="readout distance-readout"><span class="micro-label">RUN DISTANCE</span><div><strong id="distance">0.0</strong><small> KM</small></div></div>
-      </div>
-      <div class="objective"><span class="objective-icon">✦</span><div><span class="micro-label">PRIMARY OBJECTIVE</span><strong>BREAK THROUGH THE CHECKPOINT</strong><small id="objective-sub">ELIMINATE HOSTILES • SURVIVE THE RUN</small></div></div>
-      <div class="hud-right">
-        <div class="weapon"><span class="micro-label">EQUIPPED // M7 PULSE</span><strong>∞ <small>ENERGY</small></strong><div class="ammo-pips"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        <div class="wave">THREAT <b id="threat">LOW</b><div class="threat-bars"><i></i><i></i><i></i><i></i></div></div>
-      </div>
-      <div class="vitals"><span class="micro-label">ARMOR</span><div class="armor-bar"><i id="armor-fill"></i></div><b id="armor-value">100</b></div>
-      <div class="nitro"><span class="micro-label">NITRO</span><div class="nitro-bar"><i id="nitro-fill"></i></div><span id="nitro-label">READY</span></div>
-      <div id="toast" class="toast"></div>
+    <section class="hud hidden" id="hud" aria-live="polite">
+      <div class="hud-top-left"><div class="speed-card"><span class="label">SPEED</span><div><strong id="speed">000</strong><small>KM/H</small></div><div class="speed-track"><i id="speed-fill"></i></div></div><div class="distance-card"><span class="label">DISTANCE</span><strong><span id="distance">0.00</span><small> KM</small></strong></div></div>
+      <div class="race-center"><span class="label" id="event-label">CITY SPRINT</span><strong id="race-time">00:00.0</strong><div class="progress-track"><i id="progress-fill"></i></div><span id="position">1<sup>ST</sup> / 4</span></div>
+      <div class="hud-top-right"><div class="cash-readout"><span class="label">CREDITS</span><strong id="cash">2,500</strong></div><div class="place-readout"><span class="label">DISTRICT</span><strong id="district">NEON WARD</strong></div></div>
+      <div class="bottom-hud"><div class="condition"><span class="label">VEHICLE CONDITION</span><div class="condition-bar"><i id="condition-fill"></i></div></div><div class="nitro"><span class="label">NITROUS</span><div class="nitro-bar"><i id="nitro-fill"></i></div><strong id="nitro-label">READY</strong></div><div class="drift-score"><span class="label">STYLE</span><strong id="drift-score">0</strong></div></div>
+      <div class="race-toast" id="toast"></div>
     </section>
-    <div id="crosshair" class="crosshair"><i></i><b></b><em></em><span></span></div>
-    <div class="bottom-hint" id="bottom-hint"><span>WASD</span> DRIVE <b>•</b> <span>MOUSE</span> AIM + FIRE <b>•</b> <span>SHIFT</span> NITRO <b>•</b> <span>SPACE</span> BLAST</div>
-    <div class="mobile-controls" id="mobile-controls">
-      <div class="steer-pad"><button data-key="ArrowLeft" aria-label="Steer left">‹</button><button data-key="ArrowRight" aria-label="Steer right">›</button></div>
-      <button id="mobile-fire" class="fire-btn" aria-label="Fire">FIRE</button>
-      <button id="mobile-boost" class="boost-btn" aria-label="Boost">N₂O</button>
-    </div>
-    <section class="overlay" id="intro">
-      <div class="intro-card">
-        <div class="eyebrow"><span></span> 2552 // NEW MOMBASA AFTER DARK</div>
-        <h1>NEON<br><em>FRONT</em></h1>
-        <p class="tagline">THE CITY IS A WARZONE.<br><b>MAKE IT YOUR RACEWAY.</b></p>
-        <div class="intro-rule"></div>
-        <p class="briefing"><b>FIELD BRIEFING</b> — Covenant raiders have seized the expressway. Punch through the blockade, take out hostile skimmers, and keep your Warthog moving. The fastest route is the one you survive.</p>
-        <button id="start-btn" class="start-btn"><span>DEPLOY</span><b>↗</b></button>
-        <div class="controls-note"><span>← →</span> STEER <i>·</i> <span>CLICK</span> PULSE RIFLE <i>·</i> <span>SPACE</span> ROCKET <i>·</i> <span>SHIFT</span> NITRO</div>
+    <div class="bottom-hint hidden" id="bottom-hint"><span>WASD / ARROWS</span> DRIVE <b>·</b> <span>SPACE</span> NITRO <b>·</b> <span>SHIFT</span> DRIFT <b>·</b> <span>ESC</span> PAUSE</div>
+    <section class="overlay" id="garage">
+      <div class="garage-layout">
+        <div class="garage-copy">
+          <div class="eyebrow"><i></i> HARBOR CITY // 02:17 AM</div>
+          <h1>MIDNIGHT<br><em>CIRCUIT</em></h1>
+          <p class="tagline">THE CITY DOESN'T SLEEP.<br><b>NEITHER DO WE.</b></p>
+          <p class="briefing">Build your street machine, pick a route, and race the night's best drivers. Own the streets one finish line at a time.</p>
+          <div class="garage-car-row"><button class="car-arrow" id="prev-car" aria-label="Previous car">‹</button><div class="car-info"><span class="label">YOUR RIDE <b id="car-index">01 / 03</b></span><strong id="car-name">VORTEX GT</strong><small id="car-desc">BALANCED STREET COUPE</small><div class="stat-list"><span>TOP SPEED <i><b id="stat-speed"></b></i></span><span>ACCELERATION <i><b id="stat-accel"></b></i></span><span>HANDLING <i><b id="stat-handle"></b></i></span></div></div><button class="car-arrow" id="next-car" aria-label="Next car">›</button></div>
+          <div class="garage-actions"><button class="upgrade-btn" id="upgrade-btn"><span>↗</span><span><b id="upgrade-name">ENGINE UPGRADE</b><small id="upgrade-cost">NEXT LEVEL · 900 CR</small></span></button><button class="start-btn" id="open-events"><span>CHOOSE EVENT</span><b>↗</b></button></div>
+          <div class="garage-footer"><span>← → SELECT RIDE</span><i>•</i><span>CAREER LEVEL <b id="career-level">01</b></span><i>•</i><span><b id="garage-cash">2,500 CR</b></span></div>
+        </div>
+        <div class="garage-side"><div class="garage-tag">TUNED FOR THE NIGHT <span>04 / 09</span></div><div class="garage-tip"><span class="label">DRIVER'S NOTE</span><p>Draft behind rivals to build nitrous. Hold a clean drift through corners for style points and bonus credits.</p></div><div class="garage-version">MC // STREET RACING SYSTEMS <span>SEASON 01</span></div></div>
       </div>
-      <div class="side-stats"><div><b>01</b><span>SURVIVAL<br>IS OPTIONAL</span></div><div><b>02</b><span>SPEED<br>IS NOT</span></div></div>
-      <div class="version">NF // COMBAT RACING SYSTEMS <span>BUILD 09.25.52</span></div>
     </section>
-    <section class="overlay hidden" id="end-screen">
-      <div class="end-card"><div class="eyebrow"><span></span> RUN COMPLETE</div><h2 id="end-title">RUN ENDED</h2><p id="end-copy">The blockade held. This time.</p><div class="score-grid"><div><span>DISTANCE</span><b id="final-distance">0.0 KM</b></div><div><span>HOSTILES</span><b id="final-kills">00</b></div><div><span>TOP SPEED</span><b id="final-speed">000 KM/H</b></div></div><button id="retry-btn" class="start-btn"><span>RUN IT BACK</span><b>↻</b></button></div>
+    <section class="overlay hidden" id="events">
+      <div class="event-panel"><div class="eyebrow"><i></i> HARBOR CITY // EVENT SELECT</div><h2>CHOOSE YOUR<br><em>RACE NIGHT.</em></h2><p class="event-intro">Pick a route. Beat the field. Get paid.</p><div class="event-list" id="event-list"></div><div class="event-footer"><button class="text-btn" id="back-garage">← BACK TO GARAGE</button><button class="start-btn" id="start-race"><span>START RACE</span><b>↗</b></button></div></div>
     </section>
-    <div class="damage-flash" id="damage-flash"></div>
+    <section class="overlay hidden" id="pause-screen"><div class="result-card pause-card"><div class="eyebrow"><i></i> RACE PAUSED</div><h2>TAKE A<br><em>BREATHER.</em></h2><p>The city will still be here when you're ready.</p><button class="start-btn" id="resume-btn"><span>BACK TO RACE</span><b>↗</b></button><button class="text-btn" id="quit-race">QUIT TO GARAGE</button></div></section>
+    <section class="overlay hidden" id="results"><div class="result-card"><div class="eyebrow"><i></i> <span id="result-kicker">EVENT COMPLETE</span></div><h2 id="result-title">NIGHT<br><em>WON.</em></h2><p id="result-copy">The streets know your name.</p><div class="result-stats"><div><span>FINISH</span><b id="result-place">1ST</b></div><div><span>TIME</span><b id="result-time">00:00.0</b></div><div><span>REWARD</span><b id="result-reward">+750 CR</b></div></div><div class="results-actions"><button class="text-btn" id="result-garage">GARAGE</button><button class="start-btn" id="race-again"><span>RACE AGAIN</span><b>↻</b></button></div></div></section>
+    <div class="mobile-controls hidden" id="mobile-controls"><div class="steer-pad"><button data-steer="-1" aria-label="Steer left">‹</button><button data-steer="1" aria-label="Steer right">›</button></div><button id="mobile-drift" class="drift-btn">DRIFT</button><button id="mobile-gas" class="drive-btn" aria-label="Accelerate">GO</button><button id="mobile-nitro" class="nitro-btn">N₂O</button></div>
   </main>
   <script src="game.js"></script>
 </body>
